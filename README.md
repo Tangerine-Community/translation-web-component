@@ -82,12 +82,12 @@ Now with buttons to switch between the two translations...
 ## Install
 Save to your project.
 ```
-npm install --save t-lang
+npm install --save translation-web-component
 ```
 
 Import into your app.
 ```
-import `t-lang/t-lang.js'
+import `translation-web-component/t-lang.js'
 ```
 
 ## Demo or Develop
