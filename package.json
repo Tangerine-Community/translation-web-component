@@ -10,6 +10,12 @@
     "@polymer/polymer": "^3.0.0",
     "polymer-cli": "^1.9.5"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ictatrti/translation-web-component.git"
+  },
+  "author": "ICTatRTI",
+  "license": "GPLv3",
   "devDependencies": {
     "@polymer/iron-demo-helpers": "^3.0.0-pre.19",
     "@polymer/test-fixture": "^4.0.2",
