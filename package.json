@@ -1,6 +1,7 @@
 {
   "name": "t-lang",
   "main": "t-lang.js",
+  "version": "0.0.0",
   "scripts": {
     "start": "./node_modules/.bin/polymer serve",
     "test": "./node_modules/.bin/polymer test"
