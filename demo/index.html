@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>t-lang demo</title>
+
+    <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+
+    <script type="module">
+      import '@polymer/iron-demo-helpers/demo-pages-shared-styles';
+      import '@polymer/iron-demo-helpers/demo-snippet';
+    </script>
+
+    <script type="module" src="../t-lang.js"></script>
+
+    <custom-style>
+      <style is="custom-style" include="demo-pages-shared-styles">
+      </style>
+    </custom-style>
+  </head>
+  <body>
+    <div class="vertical-section-container centered">
+      <h3>Basic t-lang demo</h3>
+      <demo-snippet>
+        <template>
+          <h2>
+            <t-lang en>Hello</t-lang>
+            <t-lang fr>Bonjour</t-lang>
+          </h2>
+          <button onclick="document.documentElement.lang = 'en'; document.body.dispatchEvent(new CustomEvent('lang-change'));">
+            Enable English
+          </button>
+          <button onclick="document.documentElement.lang = 'fr'; document.body.dispatchEvent(new CustomEvent('lang-change'));">
+            Enable French 
+          </button>
+        </template>
+      </demo-snippet>
+    </div>
+  </body>
+</html>
