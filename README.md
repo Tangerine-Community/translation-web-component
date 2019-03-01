@@ -87,7 +87,7 @@ npm install --save translation-web-component
 
 Import into your app.
 ```
-import `translation-web-component/t-lang.js'
+import 'translation-web-component/t-lang.js'
 ```
 
 ## Demo or Develop
