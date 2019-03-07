@@ -23,7 +23,7 @@ class TLang extends PolymerElement {
 
   render() {
     if (document.documentElement.lang.length > 0) {
-      if (!this.attributes.hasOwnProperty(document.documentElement.lang)) {
+      if (!this.attributes.hasOwnProperty(document.documentElement.lang.toLowerCase())) {
         this.style.setProperty('display', 'none')
       } else {
         this.style.setProperty('display', 'inline')
