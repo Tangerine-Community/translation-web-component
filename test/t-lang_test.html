@@ -31,6 +31,16 @@
       </template>
     </test-fixture>
 
+    <test-fixture id="MixedContentFixture">
+      <template>
+        <h2>
+          <t-lang en>Hello</t-lang>
+          <t-lang fr>Bonjour</t-lang>
+          Foo foo foo.
+        </h2>
+      </template>
+    </test-fixture>
+
     <script type="module">
       suite('t-lang', () => {
 
@@ -55,7 +65,29 @@
           assert.equal(element.innerText, 'Hello');
         });
 
+      })
+
+      import { getTranslation } from '../util.js'
+
+      suite('util', () => {
+
+        test('getTranslation returns correct translation string', () => {
+          const element = fixture('TwoLanguagesTestFixture');
+          const firstTranslation = getTranslation(element.innerHTML, 'en')
+          const secondTranslation = getTranslation(element.innerHTML, 'fr')
+          assert.equal(firstTranslation.replace(/\s/g, ''), 'Hello')
+          assert.equal(secondTranslation.replace(/\s/g, ''), 'Bonjour')
+        });
+
+        test('getTranslation returns correct mixed content translation string', () => {
+          const element = fixture('MixedContentFixture');
+          const firstTranslation = getTranslation(element.innerHTML, 'en')
+          const secondTranslation = getTranslation(element.innerHTML, 'fr')
+          assert.equal(firstTranslation.replace(/\s/g, ''), 'HelloFoofoofoo.')
+          assert.equal(secondTranslation.replace(/\s/g, ''), 'BonjourFoofoofoo.')
+        });
       });
+
     </script>
 
   </body>
