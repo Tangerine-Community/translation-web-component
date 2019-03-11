@@ -67,22 +67,22 @@
 
       })
 
-      import { getTranslation } from '../util.js'
+      import { combTranslations } from '../util.js'
 
       suite('util', () => {
 
-        test('getTranslation returns correct translation string', () => {
+        test('combTranslations returns correct translation string', () => {
           const element = fixture('TwoLanguagesTestFixture');
-          const firstTranslation = getTranslation(element.innerHTML, 'en')
-          const secondTranslation = getTranslation(element.innerHTML, 'fr')
+          const firstTranslation = combTranslations(element.innerHTML, 'en')
+          const secondTranslation = combTranslations(element.innerHTML, 'fr')
           assert.equal(firstTranslation.replace(/\s/g, ''), 'Hello')
           assert.equal(secondTranslation.replace(/\s/g, ''), 'Bonjour')
         });
 
-        test('getTranslation returns correct mixed content translation string', () => {
+        test('combTranslations returns correct mixed content translation string', () => {
           const element = fixture('MixedContentFixture');
-          const firstTranslation = getTranslation(element.innerHTML, 'en')
-          const secondTranslation = getTranslation(element.innerHTML, 'fr')
+          const firstTranslation = combTranslations(element.innerHTML, 'en')
+          const secondTranslation = combTranslations(element.innerHTML, 'fr')
           assert.equal(firstTranslation.replace(/\s/g, ''), 'HelloFoofoofoo.')
           assert.equal(secondTranslation.replace(/\s/g, ''), 'BonjourFoofoofoo.')
         });
