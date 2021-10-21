@@ -1,22 +1,13 @@
-import {html, PolymerElement} from '@polymer/polymer/polymer-element.js';
-
 /**
  * `t-lang`
  * 
  *
  * @customElement
- * @polymer
  * @demo demo/index.html
  */
-class TLang extends PolymerElement {
-  static get template() {
-    return html`
-      <slot></slot>
-    `;
-  }
+class TLang extends HTMLElement {
   
   connectedCallback() {
-    super.connectedCallback()
     this.render()
     document.body.addEventListener('lang-change', this.render.bind(this))
   }
