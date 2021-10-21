@@ -16,6 +16,7 @@
     <script type="module" src="../t-lang.js"></script>
     <script type="module" src="../t-translate.js"></script>
     <script type="module" src="../t-t.js"></script>
+    <script type="module" src="../t-number.js"></script>
 
     <custom-style>
       <style is="custom-style" include="demo-pages-shared-styles">
@@ -37,21 +38,32 @@
               document.body.dispatchEvent(new CustomEvent('lang-ready'));
             }
           </script>
-          <h2>
+          <h2> 
+            Using t-lang:
             <t-lang en>Hello</t-lang>
             <t-lang fr>Bonjour</t-lang>
+            <t-lang bn>হ্যালো</t-lang>
           </h2>
           <h2>
+            Using t-translate:
             <t-translate>Hello</t-translate>
           </h2>
           <h2>
+            Using t-t:
             <t-t>Hello</t-t>
+          </h2>
+          <h2>
+            Using t-number:
+            <t-number>1,234,567,890.123</t-number>
           </h2>
           <button onclick="changeLanguage('en')">
             Enable English
           </button>
           <button onclick="changeLanguage('fr')">
             Enable French 
+          </button>
+          <button onclick="changeLanguage('bn')">
+            Enable Bengali 
           </button>
         </template>
       </demo-snippet>
