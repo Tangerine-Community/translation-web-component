@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v1.0.0
+- Add `<t-translate>` and shorthand `<t-t>` for translating from JSON object assigned to `window.translation`. 
+- Remove unnecessary dependency on Polymer for `<t-lang>`. Should make things just a little faster to load and lighter on memory usage.
+- Add `<t-number>` element for translating numbers, bengali support only at the moment.
+
 ## v0.1.1
 - Fix bug in combTranslations that would retrieve the default document element language
 
