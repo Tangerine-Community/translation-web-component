@@ -14,6 +14,8 @@
     </script>
 
     <script type="module" src="../t-lang.js"></script>
+    <script type="module" src="../t-translate.js"></script>
+    <script type="module" src="../t-t.js"></script>
 
     <custom-style>
       <style is="custom-style" include="demo-pages-shared-styles">
@@ -25,14 +27,30 @@
       <h3>Basic t-lang demo</h3>
       <demo-snippet>
         <template>
+          <script>
+            window.changeLanguage = async function (languageCode) {
+              document.documentElement.lang = languageCode;
+              document.body.dispatchEvent(new CustomEvent('lang-change'));
+              const response = await fetch(`./translation.${languageCode}.json`)
+              const translation = await response.json()
+              window.translation = translation
+              document.body.dispatchEvent(new CustomEvent('lang-ready'));
+            }
+          </script>
           <h2>
             <t-lang en>Hello</t-lang>
             <t-lang fr>Bonjour</t-lang>
           </h2>
-          <button onclick="document.documentElement.lang = 'en'; document.body.dispatchEvent(new CustomEvent('lang-change'));">
+          <h2>
+            <t-translate>Hello</t-translate>
+          </h2>
+          <h2>
+            <t-t>Hello</t-t>
+          </h2>
+          <button onclick="changeLanguage('en')">
             Enable English
           </button>
-          <button onclick="document.documentElement.lang = 'fr'; document.body.dispatchEvent(new CustomEvent('lang-change'));">
+          <button onclick="changeLanguage('fr')">
             Enable French 
           </button>
         </template>
