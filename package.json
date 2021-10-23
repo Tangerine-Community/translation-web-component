@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@polymer/polymer": "^3.0.0",
+    "lit": "^2.0.2",
     "polymer-cli": "^1.9.5"
   },
   "repository": {
