@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v1.1.0
+- Add `<t-select>` element for reusable language selection widget.
+- In `<t-translate>`, sanitize HTML from fragements for better compatibility with templating libraries and remove outer whitespace to allow for HTML whitespace formatting. 
+
 ## v1.0.0
 - Add `<t-translate>` and shorthand `<t-t>` for translating from JSON object assigned to `window.translation`. 
 - Remove unnecessary dependency on Polymer for `<t-lang>`. Should make things just a little faster to load and lighter on memory usage.
