@@ -7,7 +7,7 @@
 export class TTranslate extends HTMLElement {
 
   connectedCallback() {
-    this._originalContents = `${this.innerHTML}`
+    this._originalContents = `${this.innerText.trim()}`
     this.render()
     document.body.addEventListener('lang-change', this.isChanging.bind(this))
     document.body.addEventListener('lang-ready', this.render.bind(this))
