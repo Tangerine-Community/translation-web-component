@@ -1,3 +1,7 @@
 {
-  "Hello": "Bonjour"
+  "Hello": "Bonjour",
+  "Language": "Langue",
+  "English": "Anglaise",
+  "French": "Français",
+  "Bengali": "Bengali"
 }

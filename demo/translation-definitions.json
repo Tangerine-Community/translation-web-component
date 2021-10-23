@@ -1,0 +1,21 @@
+[
+  {
+    "label": "English",
+    "languageCode": "en",
+    "languageDirection": "ltr",
+    "filePath": "translation.en.json"
+  },
+  {
+    "label": "French",
+    "languageCode": "fr",
+    "languageDirection": "ltr",
+    "filePath": "translation.fr.json"
+  },
+  {
+    "label": "Bengali",
+    "languageCode": "bn",
+    "languageDirection": "ltr",
+    "filePath": "translation.bn.json"
+  }
+
+]

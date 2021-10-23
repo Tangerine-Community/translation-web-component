@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="fr">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
@@ -17,6 +17,7 @@
     <script type="module" src="../t-translate.js"></script>
     <script type="module" src="../t-t.js"></script>
     <script type="module" src="../t-number.js"></script>
+    <script type="module" src="../t-select.js"></script>
 
     <custom-style>
       <style is="custom-style" include="demo-pages-shared-styles">
@@ -28,16 +29,12 @@
       <h3>Basic t-lang demo</h3>
       <demo-snippet>
         <template>
-          <script>
-            window.changeLanguage = async function (languageCode) {
-              document.documentElement.lang = languageCode;
-              document.body.dispatchEvent(new CustomEvent('lang-change'));
-              const response = await fetch(`./translation.${languageCode}.json`)
-              const translation = await response.json()
-              window.translation = translation
-              document.body.dispatchEvent(new CustomEvent('lang-ready'));
+          <style>
+            t-select {
+              --t-select_label_background: yellow;
             }
-          </script>
+          </style>
+          <t-select></t-select>
           <h2> 
             Using t-lang:
             <t-lang en>Hello</t-lang>
@@ -56,15 +53,6 @@
             Using t-number:
             <t-number>1,234,567,890.123</t-number>
           </h2>
-          <button onclick="changeLanguage('en')">
-            Enable English
-          </button>
-          <button onclick="changeLanguage('fr')">
-            Enable French 
-          </button>
-          <button onclick="changeLanguage('bn')">
-            Enable Bengali 
-          </button>
         </template>
       </demo-snippet>
     </div>
