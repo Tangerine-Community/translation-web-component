@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v1.1.1
+- Replace hardcoded Language label in t-select with dynamic label property.
+- Refactor t-number's Bengali number translation feature to use a simple find and replace. 
+
 ## v1.1.0
 - Add `<t-select>` element for reusable language selection widget.
 - In `<t-translate>`, sanitize HTML from fragements for better compatibility with templating libraries and remove outer whitespace to allow for HTML whitespace formatting. 
