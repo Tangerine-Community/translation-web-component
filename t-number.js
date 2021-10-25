@@ -5,21 +5,24 @@
  * @demo demo/index.html
  */
 
-/*
- * Function from https://github.com/sh4hids/number-to-bengali/blob/master/index.js
- */
-
-function _toBengaliNum(t){var r={0:"০",1:"১",2:"২",3:"৩",4:"৪",5:"৫",6:"৬",7:"৭",8:"৮",9:"৯",".":".","-":"-"};if(isNaN(parseFloat(t))||isNaN(t-0))return"Invalid input type";var i="";return t.toString().split("").forEach(function(t){return i+=r[t]}),i}
-
-// Add support for commas and decimal places.
 function toBengaliNum (t) {
-  return t
-    .split(',')
-    .map(f => f.indexOf('.') !== -1 ? f : _toBengaliNum(f))
-    .join(',')
-    .split('.')
-    .map(f => f.indexOf(',') !== -1 ? f : _toBengaliNum(f))
-    .join('.')
+  const arabicToBengaliMap = {
+    0:"০",
+    1:"১",
+    2:"২",
+    3:"৩",
+    4:"৪",
+    5:"৫",
+    6:"৬",
+    7:"৭",
+    8:"৮",
+    9:"৯"
+  }
+  return Object.keys(arabicToBengaliMap)
+    .reduce((translation, key) => {
+      const re = new RegExp(key, 'g');
+      return translation.replace(re, arabicToBengaliMap[key])
+    }, t)
 }
 
 export class TNumber extends HTMLElement {
