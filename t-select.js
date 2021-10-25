@@ -66,7 +66,7 @@ export class TSelect extends LitElement {
         <form>
           <label for="translation">
             <t-translate>
-              Language 
+              ${this.label} 
             </t-translate>
           </label>
           <select name="translation" value="${this.currentLanguageCode}" @change="${this.onTranslationSelect}">
