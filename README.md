@@ -106,5 +106,12 @@ npm install
 npm run test 
 ```
 
+## Publish a new version to npm
+```
+npm login
+npm version (patch, major, or minor)
+// git commit and push
+npm publish
+```
 
 
