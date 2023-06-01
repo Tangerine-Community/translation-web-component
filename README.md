@@ -1,9 +1,5 @@
 # \<t-lang\>
 
-## Important Notice
-
-This repo will be moved to https://github.com/Tangerine-Community/translation-web-component. No further development will be made on this repo in the ICTatRTI org.
-
 ## Overview
 
 A large single translation file for an app creates a disconnect between content and context. Provide translations inline with your HTML using `<t-lang>` element. Set `<html lang="[language-code]">` on your document and in your content provide `<t-lang [language-code]>Translation content...</t-lang>`. If your app changes language after the page loads, fire the `lang-change` event with `document.body.dispatchEvent(new CustomEvent('lang-change'))` to notify the `t-lang` elements.
