@@ -8,8 +8,7 @@
   },
   "dependencies": {
     "@polymer/polymer": "^3.5.1",
-    "lit": "^2.7.4",
-    "polymer-cli": "^1.9.11"
+    "lit": "^2.7.4"
   },
   "repository": {
     "type": "git",
@@ -23,6 +22,7 @@
     "@webcomponents/webcomponentsjs": "^2.8.0",
     "chai": "^4.3.7",
     "mocha": "^10.2.0",
-    "wct-mocha": "^1.1.0"
+    "wct-mocha": "^1.1.0",
+    "polymer-cli": "^1.9.11"
   }
 }
