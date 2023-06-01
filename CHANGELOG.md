@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v1.1.2
+- Moved polymer-cli to devDependencies in package.json.
+
 ## v1.1.1
 - Replace hardcoded Language label in t-select with dynamic label property.
 - Refactor t-number's Bengali number translation feature to use a simple find and replace. 
