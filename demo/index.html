@@ -62,7 +62,7 @@
     // catch the t-select lang-change event
     document.body.addEventListener('lang-change', () => {
       const tSelect = document.querySelector('t-select');
-      if (tSelect?.currentLanguageDirection) {
+      if (tSelect && tSelect.currentLanguageDirection) {
         document.querySelector('body').style.direction = tSelect.currentLanguageDirection;
       }
     });
