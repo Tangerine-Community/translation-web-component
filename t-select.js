@@ -17,6 +17,9 @@ export class TSelect extends LitElement {
       currentLanguageCode: {
         type: String
       },
+      currentLanguageDirection: {
+        type: String
+      },
       translationDefinitions: {
         type: Array
       },
@@ -48,6 +51,7 @@ export class TSelect extends LitElement {
     super()
     this.ready = false
     this.currentLanguageCode = 'en'
+    this.currentLanguageDirection = 'ltr'
     this.translations = []
     this.pathToTranslationDefinitions = './translation-definitions.json'
     this.basePath = './'
@@ -80,7 +84,7 @@ export class TSelect extends LitElement {
                   ` : html`
                     <t-translate>
                     ${translation.label}
-                    </t-translate>                 
+                    </t-translate>
                   `}
                 </option>
             `)}
@@ -96,13 +100,17 @@ export class TSelect extends LitElement {
   }
 
   async setLanguage(languageCode) {
-    this.currentLanguageCode = languageCode
-    document.documentElement.lang = languageCode;
-    document.body.dispatchEvent(new CustomEvent('lang-change'));
-    if (this.disableJsonTranslations) return
-    const translationDefinition = this
-      .translationDefinitions
+
+    const translationDefinition = this.translationDefinitions
       .find(translationDefinition => translationDefinition.languageCode === languageCode)
+
+    this.currentLanguageCode = languageCode
+    this.currentLanguageDirection = translationDefinition.languageDirection
+    document.documentElement.lang = languageCode;
+    document.documentElement.langDirection = translationDefinition.languageDirection
+    document.body.dispatchEvent(new CustomEvent('lang-change'));
+
+    if (this.disableJsonTranslations) return
     const translationFilePath = translationDefinition.filePath
       ? `${this.basePath}${translationDefinition.filePath}`
       : `${this.basePath}/translation.${languageCode}.json`

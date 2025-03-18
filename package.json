@@ -1,7 +1,7 @@
 {
   "name": "translation-web-component",
   "main": "t-lang.js",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "scripts": {
     "start": "./node_modules/.bin/polymer serve",
     "test": "./node_modules/.bin/polymer test"
@@ -17,12 +17,13 @@
   "author": "ICTatRTI",
   "license": "GPLv3",
   "devDependencies": {
+    "@babel/plugin-proposal-optional-chaining": "^7.21.0",
     "@polymer/iron-demo-helpers": "^3.1.0",
     "@polymer/test-fixture": "^4.0.2",
     "@webcomponents/webcomponentsjs": "^2.8.0",
     "chai": "^4.3.7",
     "mocha": "^10.2.0",
-    "wct-mocha": "^1.1.0",
-    "polymer-cli": "^1.9.11"
+    "polymer-cli": "^1.9.11",
+    "wct-mocha": "^1.1.0"
   }
 }

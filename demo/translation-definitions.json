@@ -16,6 +16,12 @@
     "languageCode": "bn",
     "languageDirection": "ltr",
     "filePath": "translation.bn.json"
+  },
+  {
+    "label": "Arabic",
+    "languageCode": "ar",
+    "languageDirection": "rtl",
+    "filePath": "translation.ar.json"
   }
 
 ]
