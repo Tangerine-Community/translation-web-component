@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v1.1.4
+- Update t-select with a currentLanguageDirection property to enable RTL support.
+
 ## v1.1.2
 - Moved polymer-cli to devDependencies in package.json.
 
