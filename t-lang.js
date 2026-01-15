@@ -2,7 +2,7 @@
  * `t-lang`
  * Displays contents only if the document language matches one of its attributes.
  */
-class TLang extends HTMLElement {
+export class TLang extends HTMLElement {
   constructor() {
     super();
     // Binding the listener once so it can be removed if the element is destroyed

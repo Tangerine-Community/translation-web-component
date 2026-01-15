@@ -1,15 +1,61 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="refresh" content="0;url=demo/">
-    <title>t-lang</title>
+    <meta
+      name="viewport"
+      content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes"
+    >
+    <title>t-lang demo</title>
+    <script type="module" src="index.js"></script>
+    <style>
+      t-select {
+        --t-select_label_background: yellow;
+      }
+    </style>
+    <link rel="stylesheet" href="/style/sakura.css" type="text/css">
   </head>
   <body>
-    <!--
-        Visit demo/index.html to see live examples of your element running.
-        This page will automatically redirect you there when run in the browser
-        with `polymer serve`.
-      -->
+    <div class="vertical-section-container centered">
+      <h1>Basic t-lang demo</h1>
+      <style>
+        t-select {
+          --t-select_label_background: yellow;
+        }
+      </style>
+      <t-select current-language-code="fr">
+        <t-translate slot="label">Language</t-translate>
+      </t-select>
+      <h2>
+        Using t-lang:
+        <t-lang en>Hello</t-lang>
+        <t-lang fr>Bonjour</t-lang>
+        <t-lang bn>হ্যালো</t-lang>
+        <t-lang ar>العربية"</t-lang>
+      </h2>
+      <h2>
+        Using t-translate:
+        <t-translate>Hello</t-translate>
+      </h2>
+      <h2>
+        Using t-t:
+        <t-t>Hello</t-t>
+      </h2>
+      <h2>
+        Using t-number:
+        <t-number>1,234,567,890.123</t-number>
+      </h2>
+    </div>
   </body>
+
+  <script>
+    // catch the t-select lang-change event
+    document.body.addEventListener("lang-change", () => {
+      const tSelect = document.querySelector("t-select");
+      if (tSelect && tSelect.currentLanguageDirection) {
+        document.querySelector("body").style.direction =
+          tSelect.currentLanguageDirection;
+      }
+    });
+  </script>
 </html>
