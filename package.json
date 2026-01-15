@@ -11,7 +11,6 @@
     "test": "wtr"
   },
   "dependencies": {
-    "@polymer/polymer": "^3.5.1",
     "lit": "^3.0.0"
   },
   "repository": {
@@ -21,7 +20,6 @@
   "author": "ICTatRTI",
   "license": "GPLv3",
   "devDependencies": {
-    "@babel/plugin-proposal-optional-chaining": "^7.21.0",
     "@open-wc/testing": "^4.0.0",
     "@web/dev-server": "^0.4.6",
     "@web/test-runner": "^0.20.2",

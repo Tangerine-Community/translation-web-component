@@ -16,7 +16,6 @@ export class TSelect extends LitElement {
       },
       translationDefinitions: { type: Array },
       pathToTranslationDefinitions: { type: String },
-      basePath: { type: String },
       skipInitialTranslationLoad: { type: Boolean },
       disableJsonTranslations: { type: Boolean },
       disableLanguageLabelTranslations: { type: Boolean },
@@ -31,8 +30,7 @@ export class TSelect extends LitElement {
     this.currentLanguageCode = "en";
     this.currentLanguageDirection = "ltr";
     this.translationDefinitions = [];
-    this.pathToTranslationDefinitions = "./translation-definitions.json";
-    this.basePath = "./";
+    this.pathToTranslationDefinitions = "translation-definitions.json";
     this.skipInitialTranslationLoad = false;
     this.disableJsonTranslations = false;
     this.disableLanguageLabelTranslations = false;
@@ -69,24 +67,13 @@ export class TSelect extends LitElement {
   }
 
   async _initializeTranslations() {
-    try {
-      if (!this.disableJsonTranslations) {
-        const res = await fetch(this.pathToTranslationDefinitions);
-        this.translationDefinitions = await res.json();
-      }
-
-      // Only set language if window.translation isn't already populated
-      if (!window.translation) {
-        await this.setLanguage(this.currentLanguageCode);
-      }
-    } catch (e) {
-      console.error("t-select: Initialization failed", e);
-    }
+    const response = await fetch("/translation-definitions.json");
+    if (!response.ok) throw new Error("Could not find JSON");
+    this.translationDefinitions = await response.json();
   }
 
   render() {
     if (!this.ready) return html`<span>...</span>`;
-
     return html`
       <form>
         <label for="translation">
@@ -119,10 +106,8 @@ export class TSelect extends LitElement {
   async _onTranslationSelect(e) {
     // 1. Use e.target for better compatibility
     const val = e.target.value;
-
     // 2. Perform the async work
     await this.setLanguage(val);
-
     // 3. Dispatch the event AFTER state is updated
     this.dispatchEvent(
       new CustomEvent("change", {
@@ -138,36 +123,26 @@ export class TSelect extends LitElement {
       (d) => d.languageCode === languageCode,
     );
     if (!def) return;
-
     // Update internal properties FIRST
     this.currentLanguageCode = languageCode;
     this.currentLanguageDirection = def.languageDirection;
-
     // Update global attributes
     document.documentElement.lang = languageCode;
     document.documentElement.dir = def.languageDirection;
-
     document.body.dispatchEvent(new CustomEvent("lang-change"));
-
     if (this.disableJsonTranslations) {
       this.requestUpdate(); // Force Lit to sync visually
       return;
     }
-
-    const path = def.filePath
-      ? `${this.basePath}${def.filePath}`
-      : `${this.basePath}/translation.${languageCode}.json`;
-
     try {
-      const res = await fetch(path);
+      const res = await fetch(
+        `${window.location.origin}/translation.${languageCode}.json`,
+      );
       const json = await res.json();
-
       // Update the global translation object
       window.translation = json;
-
       // Signal to the rest of the app
       document.body.dispatchEvent(new CustomEvent("lang-ready"));
-
       // IMPORTANT: Trigger a re-render so Lit syncs the <select> value
       this.requestUpdate();
     } catch (e) {
