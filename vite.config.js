@@ -6,10 +6,6 @@ export default defineConfig({
       entry: "translation-web-component.js",
       formats: ["es"],
     },
-    rollupOptions: {
-      // Externalize dependencies that shouldn't be bundled
-      external: /^lit/,
-    },
   },
   server: {
     open: "/demo/index.html", // Point this to your demo/example page

@@ -1,43 +1,8 @@
-import { html, css, LitElement } from "lit";
+import { getTranslation } from "./util.js";
 
-/**
- * `t-select`
- * Modern Lit 3 - Standard JavaScript (No Decorators)
- */
-export class TSelect extends LitElement {
-  // 1. Define properties using the static getter (Universal JS)
-  static get properties() {
-    return {
-      label: { type: String },
-      currentLanguageCode: { type: String, attribute: "current-language-code" },
-      currentLanguageDirection: {
-        type: String,
-        attribute: "current-language-direction",
-      },
-      translationDefinitions: { type: Array },
-      pathToTranslationDefinitions: { type: String },
-      skipInitialTranslationLoad: { type: Boolean },
-      disableJsonTranslations: { type: Boolean },
-      disableLanguageLabelTranslations: { type: Boolean },
-      ready: { type: Boolean, state: true }, // Internal state
-    };
-  }
-
-  constructor() {
-    super();
-    // Default values
-    this.label = "Language";
-    this.currentLanguageCode = "en";
-    this.currentLanguageDirection = "ltr";
-    this.translationDefinitions = [];
-    this.pathToTranslationDefinitions = "translation-definitions.json";
-    this.skipInitialTranslationLoad = false;
-    this.disableJsonTranslations = false;
-    this.disableLanguageLabelTranslations = false;
-    this.ready = false;
-  }
-
-  static styles = css`
+const template = document.createElement("template");
+template.innerHTML = `
+  <style>
     label {
       background: var(--t-select_label_background);
       border: var(--t-select_label_border);
@@ -50,65 +15,239 @@ export class TSelect extends LitElement {
       margin: var(--t-select_select_margin);
       padding: var(--t-select_select_padding);
     }
-  `;
+  </style>
 
+  <form>
+    <label for="translation">
+      <slot name="label"></slot>
+    </label>
+    <select id="translation"></select>
+  </form>
+`;
+
+export class TSelect extends HTMLElement {
+  static get observedAttributes() {
+    return [
+      "current-language-code",
+      "current-language-direction",
+      "path-to-translation-definitions",
+      "skip-initial-translation-load",
+      "disable-json-translations",
+      "disable-language-label-translations",
+    ];
+  }
+
+  constructor() {
+    super();
+    this.attachShadow({ mode: "open" });
+    this.shadowRoot.appendChild(template.content.cloneNode(true));
+
+    // Defaults
+    this._currentLanguageCode = "en";
+    this._currentLanguageDirection = "ltr";
+    this._translationDefinitions = [];
+    this._pathToTranslationDefinitions = "translation-definitions.json";
+    this._skipInitialTranslationLoad = false;
+    this._disableJsonTranslations = false;
+    this._disableLanguageLabelTranslations = false;
+    this._ready = false;
+
+    // Cache nodes
+    this._select = this.shadowRoot.getElementById("translation");
+
+    // Bind handlers
+    this._onChange = this._onChange.bind(this);
+  }
+
+  // --- Lifecycle ---
   async connectedCallback() {
-    super.connectedCallback();
+    this._select.addEventListener("change", this._onChange);
 
+    // mirror Lit behavior: documentElement.lang wins if set
     const docLang = document.documentElement.lang;
-    if (docLang) {
-      this.currentLanguageCode = docLang;
-    }
+    if (docLang) this.currentLanguageCode = docLang;
 
     if (!this.skipInitialTranslationLoad) {
       await this._initializeTranslations();
     }
-    this.ready = true;
+
+    this._ready = true;
+    this._render();
   }
 
+  disconnectedCallback() {
+    this._select.removeEventListener("change", this._onChange);
+  }
+
+  attributeChangedCallback(name, oldVal, newVal) {
+    if (oldVal === newVal) return;
+
+    switch (name) {
+      case "current-language-code":
+        this._currentLanguageCode = newVal ?? "en";
+        break;
+      case "current-language-direction":
+        this._currentLanguageDirection = newVal ?? "ltr";
+        break;
+      case "path-to-translation-definitions":
+        this._pathToTranslationDefinitions =
+          newVal ?? "translation-definitions.json";
+        break;
+      case "skip-initial-translation-load":
+        this._skipInitialTranslationLoad = newVal !== null;
+        break;
+      case "disable-json-translations":
+        this._disableJsonTranslations = newVal !== null;
+        break;
+      case "disable-language-label-translations":
+        this._disableLanguageLabelTranslations = newVal !== null;
+        break;
+    }
+
+    this._render();
+  }
+
+  // --- Properties (public API) ---
+  get currentLanguageCode() {
+    return this._currentLanguageCode;
+  }
+  set currentLanguageCode(v) {
+    this._currentLanguageCode = String(v ?? "en");
+    this.setAttribute("current-language-code", this._currentLanguageCode);
+    this._render();
+  }
+
+  get currentLanguageDirection() {
+    return this._currentLanguageDirection;
+  }
+  set currentLanguageDirection(v) {
+    this._currentLanguageDirection = String(v ?? "ltr");
+    this.setAttribute(
+      "current-language-direction",
+      this._currentLanguageDirection,
+    );
+    this._render();
+  }
+
+  get translationDefinitions() {
+    return this._translationDefinitions;
+  }
+  set translationDefinitions(v) {
+    this._translationDefinitions = Array.isArray(v) ? v : [];
+    this._render();
+  }
+
+  get pathToTranslationDefinitions() {
+    return this._pathToTranslationDefinitions;
+  }
+  set pathToTranslationDefinitions(v) {
+    this._pathToTranslationDefinitions = String(
+      v ?? "translation-definitions.json",
+    );
+    this.setAttribute(
+      "path-to-translation-definitions",
+      this._pathToTranslationDefinitions,
+    );
+  }
+
+  get skipInitialTranslationLoad() {
+    return this._skipInitialTranslationLoad;
+  }
+  set skipInitialTranslationLoad(v) {
+    const bool = Boolean(v);
+    this._skipInitialTranslationLoad = bool;
+    if (bool) this.setAttribute("skip-initial-translation-load", "");
+    else this.removeAttribute("skip-initial-translation-load");
+  }
+
+  get disableJsonTranslations() {
+    return this._disableJsonTranslations;
+  }
+  set disableJsonTranslations(v) {
+    const bool = Boolean(v);
+    this._disableJsonTranslations = bool;
+    if (bool) this.setAttribute("disable-json-translations", "");
+    else this.removeAttribute("disable-json-translations");
+  }
+
+  get disableLanguageLabelTranslations() {
+    return this._disableLanguageLabelTranslations;
+  }
+  set disableLanguageLabelTranslations(v) {
+    const bool = Boolean(v);
+    this._disableLanguageLabelTranslations = bool;
+    if (bool) this.setAttribute("disable-language-label-translations", "");
+    else this.removeAttribute("disable-language-label-translations");
+  }
+
+  get ready() {
+    return this._ready;
+  }
+
+  // --- Internals ---
   async _initializeTranslations() {
-    const response = await fetch("/translation-definitions.json");
+    const path =
+      this._pathToTranslationDefinitions || "translation-definitions.json";
+    const url = path.startsWith("/") ? path : `/${path}`;
+
+    const response = await fetch(url);
     if (!response.ok) throw new Error("Could not find JSON");
     this.translationDefinitions = await response.json();
   }
 
-  render() {
-    if (!this.ready) return html`<span>...</span>`;
-    return html`
-      <form>
-        <label for="translation">
-          <t-translate>${this.label}</t-translate>
-        </label>
-        <select
-          id="translation"
-          .value="${this.currentLanguageCode}"
-          @change="${this._onTranslationSelect}"
-        >
-          ${this.translationDefinitions.map(
-            (t) => html`
-            <option
-              value="${t.languageCode}"
-              ?selected="${t.languageCode === this.currentLanguageCode}"
-            >
-              ${
-                this.disableLanguageLabelTranslations
-                  ? t.label
-                  : html`<t-translate>${t.label}</t-translate>`
-              }
-            </option>
-          `,
-          )}
-        </select>
-      </form>
-    `;
+  _render() {
+    if (!this.shadowRoot) return;
+
+    // Simple loading state: disable select + show single placeholder option
+    if (!this._ready) {
+      this._select.innerHTML = `<option value="">...</option>`;
+      this._select.value = "";
+      this._select.disabled = true;
+      return;
+    }
+
+    this._select.disabled = false;
+
+    // Build options
+    const defs = Array.isArray(this._translationDefinitions)
+      ? this._translationDefinitions
+      : [];
+    const current = this._currentLanguageCode;
+
+    this._select.innerHTML = defs
+      .map((t) => {
+        const selected = t.languageCode === current ? "selected" : "";
+
+        // Instead of using the <t-translate> component which browsers strip out:
+        const labelText = this._disableLanguageLabelTranslations
+          ? String(t.label ?? "")
+          : getTranslation(t.label, t.label); // Fetch from window.translation if it exists
+
+        return `<option value="${this._escapeAttr(t.languageCode)}" ${selected}>
+              ${this._escapeHtml(labelText)}
+            </option>`;
+      })
+      .join("");
+
+    // Ensure the select reflects the current value after DOM update
+    this._select.value = current;
   }
 
-  async _onTranslationSelect(e) {
-    // 1. Use e.target for better compatibility
+  _escapeHtml(str) {
+    const div = document.createElement("div");
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  _escapeAttr(str) {
+    // good enough for value attributes
+    return this._escapeHtml(str);
+  }
+
+  async _onChange(e) {
     const val = e.target.value;
-    // 2. Perform the async work
     await this.setLanguage(val);
-    // 3. Dispatch the event AFTER state is updated
+
     this.dispatchEvent(
       new CustomEvent("change", {
         detail: { languageCode: val },
@@ -119,37 +258,44 @@ export class TSelect extends LitElement {
   }
 
   async setLanguage(languageCode) {
-    const def = this.translationDefinitions.find(
+    const def = (this._translationDefinitions || []).find(
       (d) => d.languageCode === languageCode,
     );
     if (!def) return;
-    // Update internal properties FIRST
-    this.currentLanguageCode = languageCode;
-    this.currentLanguageDirection = def.languageDirection;
-    // Update global attributes
+
+    // update internal state
+    this._currentLanguageCode = languageCode;
+    this._currentLanguageDirection = def.languageDirection;
+
+    // reflect attributes (keeps external bindings in sync)
+    this.setAttribute("current-language-code", this._currentLanguageCode);
+    this.setAttribute(
+      "current-language-direction",
+      this._currentLanguageDirection,
+    );
+
+    // update global attrs
     document.documentElement.lang = languageCode;
     document.documentElement.dir = def.languageDirection;
     document.body.dispatchEvent(new CustomEvent("lang-change"));
-    if (this.disableJsonTranslations) {
-      this.requestUpdate(); // Force Lit to sync visually
+
+    if (this._disableJsonTranslations) {
+      this._render(); // sync select value
       return;
     }
+
     try {
       const res = await fetch(
         `${window.location.origin}/translation.${languageCode}.json`,
       );
       const json = await res.json();
-      // Update the global translation object
       window.translation = json;
-      // Signal to the rest of the app
       document.body.dispatchEvent(new CustomEvent("lang-ready"));
-      // IMPORTANT: Trigger a re-render so Lit syncs the <select> value
-      this.requestUpdate();
-    } catch (e) {
-      console.error(`t-select: Fetch error`, e);
+      this._render(); // ensure select reflects state
+    } catch (err) {
+      console.error("t-select: Fetch error", err);
     }
   }
 }
 
-// Explicitly define the custom element at the bottom
 customElements.define("t-select", TSelect);

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="fr">
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <meta
@@ -17,11 +17,7 @@
       --t-select_label_background: yellow;
     }
     </style>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/sakura.css/css/sakura.css"
-      type="text/css"
-    >
+    <link rel="stylesheet" href="/style/sakura.css" type="text/css">
   </head>
   <body>
     <div class="vertical-section-container centered">
@@ -31,7 +27,9 @@
         --t-select_label_background: yellow;
       }
       </style>
-      <t-select></t-select>
+      <t-select current-language-code="fr">
+        <t-translate slot="label">Language</t-translate>
+      </t-select>
       <h2>
         Using t-lang:
         <t-lang en>Hello</t-lang>

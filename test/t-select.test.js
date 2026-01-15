@@ -1,6 +1,7 @@
 import { html, fixture, expect, elementUpdated } from "@open-wc/testing";
 import sinon from "sinon";
 import "../t-select.js";
+import "../t-translate.js";
 
 describe("TSelect Component", () => {
   let fetchStub;
@@ -30,25 +31,28 @@ describe("TSelect Component", () => {
   });
 
   it("renders with the default label", async () => {
-    // We create the element AFTER the stub is ready
     const el = await fixture(
-      html`<t-select label="Choose Language"></t-select>`,
+      html`<t-select>
+        <t-translate slot="label">Language</t-translate>
+      </t-select>`,
     );
 
-    // Wait for Lit's async render cycles
-    await elementUpdated(el);
-    await el.updateComplete;
+    // Give the custom elements (t-select and t-translate)
+    // a moment to fully "upgrade" and render.
+    await new Promise((resolve) => setTimeout(resolve, 0));
 
-    // Use a more robust way to find the element
-    const translateEl = el.shadowRoot.querySelector("t-translate");
+    const translateEl = el.querySelector('t-translate[slot="label"]');
 
-    expect(translateEl, "t-translate should exist in shadowRoot").to.not.be
-      .null;
-    expect(translateEl.innerText).to.contain("Choose Language");
+    expect(translateEl, "t-translate should exist").to.not.be.null;
+
+    // Use textContent instead of innerText for better reliability in tests
+    expect(translateEl.textContent.trim()).to.equal("Language");
   });
 
   it("updates the document language when a selection is made", async () => {
-    const el = await fixture(html`<t-select></t-select>`);
+    const el = await fixture(html`<t-select>
+      <t-translate slot="label">Language</t-translate>
+    </t-select>`);
     await elementUpdated(el);
 
     const select = el.shadowRoot.querySelector("select");

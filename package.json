@@ -10,9 +10,6 @@
     "preview": "vite preview",
     "test": "wtr"
   },
-  "dependencies": {
-    "lit": "^3.0.0"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/ictatrti/translation-web-component.git"
