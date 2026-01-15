@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v1.1.5
+- Lots of updates and remove polymer in favour of vite, updated testing also. 
+
 ## v1.1.4
 - Update t-select with a currentLanguageDirection property to enable RTL support.
 
