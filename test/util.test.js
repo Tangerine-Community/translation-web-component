@@ -44,4 +44,33 @@ describe("util.js: combTranslations", () => {
   it("should return an empty string if markup is empty", () => {
     expect(combTranslations("", "en")).to.equal("");
   });
+
+  describe("util.js: Accessibility Sanity Check", () => {
+
+    it("should remove aria-hidden elements that don't match the language", () => {
+      const markup = `
+      <div>
+        <t-lang en aria-hidden="false">Visible</t-lang>
+        <t-lang es aria-hidden="true">Hidden</t-lang>
+      </div>
+    `;
+
+      const result = combTranslations(markup, "en");
+
+      // The unwrapped 'en' text should be there
+      expect(result).to.contain("Visible");
+      // The 'es' content should be purged entirely from the markup string
+      expect(result).to.not.contain("Hidden");
+      expect(result).to.not.contain('aria-hidden="true"');
+    });
+
+    it("should ensure the final output is clean text without aria attributes", () => {
+      const markup = `<t-lang en aria-hidden="false">Clean Content</t-lang>`;
+      const result = combTranslations(markup, "en");
+
+      // Check that we didn't accidentally leave an aria-hidden="false"
+      // on a parent div or as a stray attribute string
+      expect(result).to.equal("Clean Content");
+    });
+  });
 });

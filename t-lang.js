@@ -20,16 +20,13 @@ class TLang extends HTMLElement {
 
   render() {
     const currentLang = document.documentElement.lang.toLowerCase();
-
-    if (currentLang.length > 0) {
-      // Use .hasAttribute() for a more reliable check
-      if (this.hasAttribute(currentLang)) {
-        this.style.display = "inline";
-        this.setAttribute("aria-hidden", "false");
-      } else {
-        this.style.display = "none";
-        this.setAttribute("aria-hidden", "true");
-      }
+    const isMatched = this.hasAttribute(currentLang);
+    if (isMatched) {
+      this.removeAttribute('hidden');
+      this.setAttribute('aria-hidden', 'false');
+    } else {
+      this.setAttribute('hidden', '');
+      this.setAttribute('aria-hidden', 'true');
     }
   }
 }
