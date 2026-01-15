@@ -22,11 +22,11 @@ class TLang extends HTMLElement {
     const currentLang = document.documentElement.lang.toLowerCase();
     const isMatched = this.hasAttribute(currentLang);
     if (isMatched) {
-      this.removeAttribute('hidden');
-      this.setAttribute('aria-hidden', 'false');
+      this.removeAttribute("hidden");
+      this.setAttribute("aria-hidden", "false");
     } else {
-      this.setAttribute('hidden', '');
-      this.setAttribute('aria-hidden', 'true');
+      this.setAttribute("hidden", "");
+      this.setAttribute("aria-hidden", "true");
     }
   }
 }

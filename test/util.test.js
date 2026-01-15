@@ -46,7 +46,6 @@ describe("util.js: combTranslations", () => {
   });
 
   describe("util.js: Accessibility Sanity Check", () => {
-
     it("should remove aria-hidden elements that don't match the language", () => {
       const markup = `
       <div>
