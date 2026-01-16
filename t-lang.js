@@ -1,33 +1,43 @@
-/**
- * `t-lang`
- * Displays contents only if the document language matches one of its attributes.
- */
 export class TLang extends HTMLElement {
   constructor() {
     super();
-    // Binding the listener once so it can be removed if the element is destroyed
-    this._onLangChange = () => this.render();
+    this._onMutation = () => this.render();
   }
 
   connectedCallback() {
-    this.render();
-    document.body.addEventListener("lang-change", this._onLangChange);
-  }
+    // 1. Self-contained observer for the <html> tag
+    this._observer = new MutationObserver(this._onMutation);
+    this._observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["lang"],
+    });
 
-  disconnectedCallback() {
-    document.body.removeEventListener("lang-change", this._onLangChange);
+    // 2. Initial render
+    this.render();
   }
 
   render() {
-    const currentLang = document.documentElement.lang.toLowerCase();
-    const isMatched = this.hasAttribute(currentLang);
-    if (isMatched) {
-      this.removeAttribute("hidden");
-      this.setAttribute("aria-hidden", "false");
-    } else {
-      this.setAttribute("hidden", "");
-      this.setAttribute("aria-hidden", "true");
+    // Get base lang (e.g., 'fr' from 'fr-CA')
+    const currentLang = (document.documentElement.lang || "en")
+      .toLowerCase()
+      .split("-")[0];
+
+    // Check if the currentLang exists in the dataset (e.g., data-fr)
+    // dataset[currentLang] will be "" (truthy) if the attribute exists
+    const isMatch = this.dataset[currentLang] !== undefined;
+
+    // Toggle visibility and accessibility
+    this.hidden = !isMatch;
+    this.setAttribute("aria-hidden", (!isMatch).toString());
+
+    // Ensure display isn't overwritten if we want it to be inline
+    if (isMatch && this.style.display === "none") {
+      this.style.display = "";
     }
+  }
+
+  disconnectedCallback() {
+    if (this._observer) this._observer.disconnect();
   }
 }
 

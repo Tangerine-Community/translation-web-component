@@ -9,21 +9,16 @@
     <title>t-lang demo</title>
     <script type="module" src="index.js"></script>
     <style>
-      t-select {
-        --t-select_label_background: yellow;
-      }
+    t-select {
+      --t-select_label_background: yellow;
+    }
     </style>
     <link rel="stylesheet" href="/style/sakura.css" type="text/css">
   </head>
   <body>
-    <div class="vertical-section-container centered">
+    <div>
       <h1>Basic t-lang demo</h1>
-      <style>
-        t-select {
-          --t-select_label_background: yellow;
-        }
-      </style>
-      <t-select current-language-code="fr">
+      <t-select>
         <t-translate slot="label">Language</t-translate>
       </t-select>
       <h2>
@@ -47,15 +42,14 @@
       </h2>
     </div>
   </body>
-
   <script>
-    // catch the t-select lang-change event
-    document.body.addEventListener("lang-change", () => {
-      const tSelect = document.querySelector("t-select");
-      if (tSelect && tSelect.currentLanguageDirection) {
-        document.querySelector("body").style.direction =
-          tSelect.currentLanguageDirection;
-      }
-    });
+  // catch the t-select lang-change event
+  document.body.addEventListener("lang-change", () => {
+    const tSelect = document.querySelector("t-select");
+    if (tSelect && tSelect.currentLanguageDirection) {
+      document.querySelector("body").style.direction =
+        tSelect.currentLanguageDirection;
+    }
+  });
   </script>
 </html>

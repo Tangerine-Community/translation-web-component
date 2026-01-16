@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="fr">
   <head>
     <meta charset="utf-8">
     <meta
@@ -8,58 +8,72 @@
     >
     <title>t-lang demo</title>
     <script type="module" src="../t-lang.js"></script>
-    <script type="module" src="../t-translate.js"></script>
-    <script type="module" src="../t-t.js"></script>
-    <script type="module" src="../t-number.js"></script>
-    <script type="module" src="../t-select.js"></script>
-    <style>
-    t-select {
-      --t-select_label_background: yellow;
-    }
-    </style>
+    <script type="module" src="../t-option.js"></script>
     <link rel="stylesheet" href="/style/sakura.css" type="text/css">
   </head>
   <body>
-    <div class="vertical-section-container centered">
+    <div>
       <h1>Basic t-lang demo</h1>
-      <style>
-      t-select {
-        --t-select_label_background: yellow;
-      }
-      </style>
-      <t-select current-language-code="fr">
-        <t-translate slot="label">Language</t-translate>
-      </t-select>
-      <h2>
-        Using t-lang:
-        <t-lang en>Hello</t-lang>
-        <t-lang fr>Bonjour</t-lang>
-        <t-lang bn>হ্যালো</t-lang>
-        <t-lang ar>العربية"</t-lang>
-      </h2>
-      <h2>
-        Using t-translate:
-        <t-translate>Hello</t-translate>
-      </h2>
-      <h2>
-        Using t-t:
-        <t-t>Hello</t-t>
-      </h2>
-      <h2>
-        Using t-number:
-        <t-number>1,234,567,890.123</t-number>
-      </h2>
+      <hr>
+      <label for="lang">
+        <t-lang data-en>Language</t-lang>
+        <t-lang data-fr>Langue</t-lang>
+        <t-lang data-bn>ভাষা</t-lang>
+        <t-lang data-ar>لغة</t-lang>
+      </label>
+      <select id="lang">
+        <option
+          is="t-option"
+          value="en"
+          data-en="English"
+          data-fr="Anglaise"
+          data-bn="ইংরেজি"
+          data-ar="إنجليزي"
+        >
+          English
+        </option>
+        <option
+          is="t-option"
+          value="fr"
+          data-en="French"
+          data-fr="Français"
+          data-bn="ফরাসি"
+          data-ar="فرنسي"
+          selected
+        >
+          French
+        </option>
+        <option
+          is="t-option"
+          value="bn"
+          data-en="Bengali"
+          data-fr="Bengali"
+          data-bn="বাংলা"
+          data-ar="البنغالية"
+        >
+          Bengali
+        </option>
+        <option
+          is="t-option"
+          value="ar"
+          data-en="Arabic"
+          data-fr="Arabe"
+          data-bn="আরবি"
+          data-ar="العربية"
+        >
+          Arabic
+        </option>
+      </select>
+      <hr>
     </div>
   </body>
 
   <script>
-  // catch the t-select lang-change event
-  document.body.addEventListener("lang-change", () => {
-    const tSelect = document.querySelector("t-select");
-    if (tSelect && tSelect.currentLanguageDirection) {
-      document.querySelector("body").style.direction =
-        tSelect.currentLanguageDirection;
-    }
-  });
+  (() => {
+    const langSelect = document.getElementById("lang");
+    langSelect.addEventListener("change", () => {
+      document.documentElement.lang = langSelect.value;
+    });
+  })();
   </script>
 </html>
